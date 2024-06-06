@@ -60,7 +60,9 @@ public class AdministratorController {
 	/////////////////////////////////////////////////////
 	/**
 	 * 管理者登録画面を出力します.
-	 * 
+	 *
+	 * @param form 管理者登録情報の入力フォーム
+	 * @param model Requestスコープの準備
 	 * @return 管理者登録画面
 	 */
 	@GetMapping("/toInsert")
@@ -72,6 +74,8 @@ public class AdministratorController {
 	 * 管理者情報を登録します.
 	 * 
 	 * @param form 管理者情報用フォーム
+	 * @param bindingResult バリデーションチェックでエラーが返ってきたら取得する
+	 * @param model Requestスコープの準備
 	 * @return ログイン画面へリダイレクト
 	 */
 	@PostMapping("/insert")
