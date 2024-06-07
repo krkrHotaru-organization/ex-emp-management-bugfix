@@ -84,7 +84,6 @@ public class AdministratorController {
 						 Model model) {
 		if (!(form.getConfPassword().equals(form.getPassword()))){
 			bindingResult.rejectValue("confPassword","","パスワードと確認用パスワードは一致させてください");
-			return toInsert(form,model);
 		}
 		if (bindingResult.hasErrors()){
 			return toInsert(form,model);
