@@ -82,6 +82,9 @@ public class AdministratorController {
 	public String insert(@Validated InsertAdministratorForm form,
 						 BindingResult bindingResult,
 						 Model model) {
+		if (administratorService.isExistMail(form.getMailAddress())){
+			bindingResult.rejectValue("mailAddress", "","入力されたメールアドレスは登録済みです");
+		}
 		if (bindingResult.hasErrors()){
 			return toInsert(form,model);
 		}
