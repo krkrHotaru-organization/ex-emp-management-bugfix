@@ -18,6 +18,9 @@ public class InsertAdministratorForm {
 	/** パスワード */
 	@NotBlank(message = "パスワードは必須です")
 	private String password;
+	/** 確認用パスワード */
+	@NotBlank(message = "パスワード確認は必須です")
+	private String confPassword;
 
 	public String getName() {
 		return name;
@@ -43,10 +46,21 @@ public class InsertAdministratorForm {
 		this.password = password;
 	}
 
-	@Override
-	public String toString() {
-		return "InsertAdministratorForm [name=" + name + ", mailAddress=" + mailAddress + ", password=" + password
-				+ "]";
+	public String getConfPassword() {
+		return confPassword;
 	}
 
+	public void setConfPassword(String confPassword) {
+		this.confPassword = confPassword;
+	}
+
+	@Override
+	public String toString() {
+		return "InsertAdministratorForm{" +
+				"name='" + name + '\'' +
+				", mailAddress='" + mailAddress + '\'' +
+				", password='" + password + '\'' +
+				", confPassword='" + confPassword + '\'' +
+				'}';
+	}
 }
