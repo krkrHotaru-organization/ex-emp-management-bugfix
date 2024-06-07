@@ -119,7 +119,6 @@ public class AdministratorController {
 			return "redirect:/";
 		}
 		session.setAttribute("administratorName",administrator.getName());
-		System.out.println("OK");
 		return "redirect:/employee/showList";
 	}
 
