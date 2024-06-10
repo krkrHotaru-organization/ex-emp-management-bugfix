@@ -86,6 +86,10 @@
       <ol class="breadcrumb">
         <li class="active">
           <a href="list.html" th:href="@{/employee/showList}">従業員リスト</a>
+          <form th:action="@{/employee/fuzzy-search}" method="post">
+            <label for="fuzzy-search">🔍</label>
+            <input type="text" name="inputName" id="fuzzy-search">
+          </form>
         </li>
       </ol>
 
