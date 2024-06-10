@@ -85,8 +85,8 @@
       <!-- パンくずリスト -->
       <ol class="breadcrumb">
         <li class="active">
-          <a href="list.html" th:href="@{/employee/showList?searchWord=}">従業員リスト</a>
-          <form th:action="@{/employee/showList}" method="get">
+          <a href="list.html" th:href="@{/employee/showList}">従業員リスト</a>
+          <form th:action="@{/employee/showList?searchWord=}" method="get">
             <label for="fuzzy-search">🔍</label>
             <input type="text" name="searchWord" id="fuzzy-search">
             <button type="submit">検索</button>
@@ -102,7 +102,9 @@
           <!-- ここから上を編集する必要はありません -->
 
           <!-- ここにモックのtable要素を貼り付けます -->
-
+          <div th:if="${ notFound }">
+            <p th:text="${ notFound }">１件もありませんでした</p>
+          </div>
           <table class="table table-striped">
             <thead>
               <tr>
@@ -130,7 +132,6 @@
               </tr>
             </tbody>
           </table>
-
           <!-- ここから下を編集する必要はありません -->
         </div>
       </div>
