@@ -103,7 +103,7 @@
 
           <!-- ここにモックのtable要素を貼り付けます -->
           <div th:if="${ notFound }">
-            <p th:text="${ notFound }">１件もありませんでした</p>
+            <p th:text="${ notFound }" class="alert alert-danger">１件もありませんでした</p>
           </div>
           <table class="table table-striped">
             <thead>
