@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,5 +92,20 @@ public class EmployeeController {
 		employee.setDependentsCount(form.getIntDependentsCount());
 		employeeService.update(employee);
 		return "redirect:/employee/showList";
+	}
+
+	/**
+	 * 入力された内容で従業員名をあいまい検索し、該当した従業員情報一覧を表示します.
+	 *
+	 * @param inputName 入力された名前
+	 * @param model Requestスコープの準備
+	 * @return 従業員一覧画面
+	 */
+	@PostMapping("/fuzzy-search")
+	public String fuzzySearch(String inputName,Model model){
+		List<Employee> employeeList = new ArrayList<>();
+		employeeList = employeeService.fuzzySearchByName(inputName);
+		model.addAttribute("employeeList", employeeList);
+		return "employee/list";
 	}
 }

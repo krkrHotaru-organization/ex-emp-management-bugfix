@@ -52,4 +52,14 @@ public class EmployeeService {
 	public void update(Employee employee) {
 		employeeRepository.update(employee);
 	}
+
+	/**
+	 * 従業員情報の名前であいまい検索を行います.
+	 *
+	 * @param inputName 入力された名前
+	 * @return 検索結果の従業員情報一覧
+	 */
+	public List<Employee> fuzzySearchByName(String inputName){
+		return employeeRepository.findByNameFuzzy(inputName);
+	}
 }
