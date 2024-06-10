@@ -122,6 +122,6 @@ public class EmployeeRepository {
 							((SELECT (max(id)+1) FROM employees),
 							:name,:image,:gender,:hireDate,:mailAddress,:zipCode,:address,:telephone,:salary,:characteristics,:dependentsCount);
 						""";
-		template.update(sql,param);
+		System.out.println(template.update(sql,param));
 	}
 }

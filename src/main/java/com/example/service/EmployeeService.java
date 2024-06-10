@@ -62,4 +62,8 @@ public class EmployeeService {
 	public List<Employee> fuzzySearchByName(String searchWord){
 		return employeeRepository.findByNameFuzzy(searchWord);
 	}
+
+	public void insert(Employee employee){
+		employeeRepository.save(employee);
+	}
 }

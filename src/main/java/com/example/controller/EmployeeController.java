@@ -123,7 +123,7 @@ public class EmployeeController {
 		BeanUtils.copyProperties(form, employee);
 		Date hireDate = java.sql.Date.valueOf(form.getHireDate());
 		employee.setHireDate(hireDate);
-//		employeeService.insert(employee);
+		employeeService.insert(employee);
 		System.out.println(employee);
 		return "redirect:/employee/showList";
 	}
