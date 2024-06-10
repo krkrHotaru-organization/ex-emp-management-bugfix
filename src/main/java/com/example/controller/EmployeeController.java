@@ -53,12 +53,17 @@ public class EmployeeController {
 	 */
 	@GetMapping("/showList")
 	public String showList(String searchWord,Model model) {
-		List<Employee> employeeList = employeeService.fuzzySearchByName(searchWord);
-		if (employeeList.isEmpty()){
+		List<Employee> employeeList = new ArrayList<>();
+		if (searchWord != null) {
+			employeeList = employeeService.fuzzySearchByName(searchWord);
+		} else {
 			employeeList = employeeService.showList();
-			if (searchWord != null){
-				model.addAttribute("notFound","１件もありませんでした");
-			}
+		}
+
+		if (employeeList.size() == 0) {
+			model.addAttribute("notFound", "１件もありませんでした。");
+			employeeList = employeeService.showList();
+
 		}
 		model.addAttribute("employeeList", employeeList);
 		return "employee/list";
