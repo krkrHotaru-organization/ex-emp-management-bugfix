@@ -1,6 +1,6 @@
 package com.example.form;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  * 従業員登録情報の入力を受け取るフォーム.
@@ -16,7 +16,7 @@ public class InsertEmployeeForm {
     /** 性別 */
     private String gender;
     /** 入社日 */
-    private Date hireDate;
+    private LocalDate hireDate;
     /** メールアドレス */
     private String mailAddress;
     /** 郵便番号 */
@@ -56,11 +56,11 @@ public class InsertEmployeeForm {
         this.gender = gender;
     }
 
-    public Date getHireDate() {
+    public LocalDate getHireDate() {
         return hireDate;
     }
 
-    public void setHireDate(Date hireDate) {
+    public void setHireDate(LocalDate hireDate) {
         this.hireDate = hireDate;
     }
 

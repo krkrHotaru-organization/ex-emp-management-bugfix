@@ -3,6 +3,10 @@ package com.example.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.domain.Administrator;
+import com.example.form.InsertAdministratorForm;
+import com.example.form.InsertEmployeeForm;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -104,6 +108,20 @@ public class EmployeeController {
 		employee.setId(form.getIntId());
 		employee.setDependentsCount(form.getIntDependentsCount());
 		employeeService.update(employee);
+		return "redirect:/employee/showList";
+	}
+
+	@GetMapping("/toInsert")
+	public String toInsert(InsertEmployeeForm form){
+		return "employee/insert";
+	}
+
+	@PostMapping("/insert")
+	public String register(InsertEmployeeForm form){
+		Employee employee = new Employee();
+		BeanUtils.copyProperties(form, employee);
+//		employeeService.insert(administrator);
+		System.out.println(form);
 		return "redirect:/employee/showList";
 	}
 
