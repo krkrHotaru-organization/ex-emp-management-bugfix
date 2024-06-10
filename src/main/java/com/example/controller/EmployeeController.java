@@ -44,14 +44,21 @@ public class EmployeeController {
 	// ユースケース：従業員一覧を表示する
 	/////////////////////////////////////////////////////
 	/**
-	 * 従業員一覧画面を出力します.
-	 * 
+	 * 入力された内容で従業員名をあいまい検索し、該当した従業員情報一覧を表示します.
+	 * 検索ボックスに入力がない場合は、全従業員の一覧を表示します。
+	 *
+	 * @param searchWord 入力された名前
 	 * @param model モデル
 	 * @return 従業員一覧画面
 	 */
 	@GetMapping("/showList")
-	public String showList(Model model) {
-		List<Employee> employeeList = employeeService.showList();
+	public String showList(String searchWord,Model model) {
+		List<Employee> employeeList = new ArrayList<>();
+		if (searchWord == null){
+			employeeList = employeeService.showList();
+		}else {
+			employeeList = employeeService.fuzzySearchByName(searchWord);
+		}
 		model.addAttribute("employeeList", employeeList);
 		return "employee/list";
 	}
@@ -94,18 +101,4 @@ public class EmployeeController {
 		return "redirect:/employee/showList";
 	}
 
-	/**
-	 * 入力された内容で従業員名をあいまい検索し、該当した従業員情報一覧を表示します.
-	 *
-	 * @param searchWord 入力された名前
-	 * @param model Requestスコープの準備
-	 * @return 従業員一覧画面
-	 */
-	@PostMapping("/fuzzy-search")
-	public String fuzzySearch(String searchWord,Model model){
-		List<Employee> employeeList = new ArrayList<>();
-		employeeList = employeeService.fuzzySearchByName(searchWord);
-		model.addAttribute("employeeList", employeeList);
-		return "employee/list";
-	}
 }

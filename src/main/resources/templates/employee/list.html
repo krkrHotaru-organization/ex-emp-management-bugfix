@@ -85,8 +85,8 @@
       <!-- パンくずリスト -->
       <ol class="breadcrumb">
         <li class="active">
-          <a href="list.html" th:href="@{/employee/showList}">従業員リスト</a>
-          <form th:action="@{/employee/fuzzy-search}" method="post">
+          <a href="list.html" th:href="@{/employee/showList?searchWord=}">従業員リスト</a>
+          <form th:action="@{/employee/showList}" method="get">
             <label for="fuzzy-search">🔍</label>
             <input type="text" name="searchWord" id="fuzzy-search">
             <button type="submit">検索</button>
