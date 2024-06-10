@@ -1,6 +1,7 @@
 package com.example.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,13 +21,18 @@ public class AdministratorService {
 	@Autowired
 	private AdministratorRepository administratorRepository;
 
+	@Autowired
+	PasswordEncoder passwordEncoder;
+
 	/**
 	 * 管理者情報を登録します.
 	 * 
 	 * @param administrator 管理者情報
 	 */
 	public void insert(Administrator administrator) {
+		administrator.setPassword(passwordEncoder.encode(administrator.getPassword()));
 		administratorRepository.insert(administrator);
+		System.out.println(administrator.getPassword());
 	}
 
 	/**
@@ -37,7 +43,11 @@ public class AdministratorService {
 	 * @return 管理者情報 存在しない場合はnullが返ります
 	 */
 	public Administrator login(String mailAddress, String password) {
-		Administrator administrator = administratorRepository.findByMailAddressAndPassward(mailAddress, password);
-		return administrator;
+		Administrator administrator = administratorRepository.findByMailAddress(mailAddress);
+		if (passwordEncoder.matches(password, administrator.getPassword())) {
+			return administrator;
+		} else {
+			return null;
+		}
 	}
 }

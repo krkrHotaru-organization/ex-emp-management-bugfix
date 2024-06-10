@@ -2,6 +2,10 @@ package com.example.controller;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.context.annotation.Bean;
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+//import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -136,5 +140,23 @@ public class AdministratorController {
 		session.invalidate();
 		return "redirect:/";
 	}
+//
+//	public void passHash(String pass) {
+//
+//		String digest = passwordEncoder.encode(pass);
+//		System.out.println("ハッシュ値 = " + digest);
+//
+//	}
+//
+//	public boolean passConf(String mail,String inputPass){
+//		String hashPass = passwordEncoder.encode(inputPass);
+//		Administrator administrator = administratorService.login(mail,hashPass);
+//		if (administrator.getPass) {
+//			System.out.println("一致したよ");
+//			return;
+//		}
+//		System.out.println("一致しなかったよ");
+//		return true;
+//	}
 
 }
