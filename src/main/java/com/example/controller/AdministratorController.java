@@ -140,23 +140,4 @@ public class AdministratorController {
 		session.invalidate();
 		return "redirect:/";
 	}
-//
-//	public void passHash(String pass) {
-//
-//		String digest = passwordEncoder.encode(pass);
-//		System.out.println("ハッシュ値 = " + digest);
-//
-//	}
-//
-//	public boolean passConf(String mail,String inputPass){
-//		String hashPass = passwordEncoder.encode(inputPass);
-//		Administrator administrator = administratorService.login(mail,hashPass);
-//		if (administrator.getPass) {
-//			System.out.println("一致したよ");
-//			return;
-//		}
-//		System.out.println("一致しなかったよ");
-//		return true;
-//	}
-
 }
