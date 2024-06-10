@@ -88,4 +88,22 @@ public class EmployeeRepository {
 		String updateSql = "UPDATE employees SET dependents_count=:dependentsCount WHERE id=:id";
 		template.update(updateSql, param);
 	}
+
+	/**
+	 * 従業員名であいまい検索した結果を返す.
+	 *
+	 * @param name 入力された名前
+	 * @return 検索結果の従業員情報
+	 */
+	public List<Employee> findByNameFuzzy(String name){
+		String sql = """
+						SELECT
+							id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count
+						FROM employees
+						WHERE name LIKE :name
+						ORDER BY hire_date ASC;
+						""";
+		SqlParameterSource param = new MapSqlParameterSource().addValue("name","%" + name + "%");
+		return template.query(sql,param,EMPLOYEE_ROW_MAPPER);
+	}
 }
