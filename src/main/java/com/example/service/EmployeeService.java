@@ -56,10 +56,10 @@ public class EmployeeService {
 	/**
 	 * 従業員情報の名前であいまい検索を行います.
 	 *
-	 * @param inputName 入力された名前
+	 * @param searchWord 入力された名前
 	 * @return 検索結果の従業員情報一覧
 	 */
-	public List<Employee> fuzzySearchByName(String inputName){
-		return employeeRepository.findByNameFuzzy(inputName);
+	public List<Employee> fuzzySearchByName(String searchWord){
+		return employeeRepository.findByNameFuzzy(searchWord);
 	}
 }

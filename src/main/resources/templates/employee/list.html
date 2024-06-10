@@ -88,7 +88,7 @@
           <a href="list.html" th:href="@{/employee/showList}">従業員リスト</a>
           <form th:action="@{/employee/fuzzy-search}" method="post">
             <label for="fuzzy-search">🔍</label>
-            <input type="text" name="inputName" id="fuzzy-search">
+            <input type="text" name="searchWord" id="fuzzy-search">
             <button type="submit">検索</button>
           </form>
         </li>

@@ -97,14 +97,14 @@ public class EmployeeController {
 	/**
 	 * 入力された内容で従業員名をあいまい検索し、該当した従業員情報一覧を表示します.
 	 *
-	 * @param inputName 入力された名前
+	 * @param searchWord 入力された名前
 	 * @param model Requestスコープの準備
 	 * @return 従業員一覧画面
 	 */
 	@PostMapping("/fuzzy-search")
-	public String fuzzySearch(String inputName,Model model){
+	public String fuzzySearch(String searchWord,Model model){
 		List<Employee> employeeList = new ArrayList<>();
-		employeeList = employeeService.fuzzySearchByName(inputName);
+		employeeList = employeeService.fuzzySearchByName(searchWord);
 		model.addAttribute("employeeList", employeeList);
 		return "employee/list";
 	}
