@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -120,8 +121,10 @@ public class EmployeeController {
 	public String register(InsertEmployeeForm form){
 		Employee employee = new Employee();
 		BeanUtils.copyProperties(form, employee);
-//		employeeService.insert(administrator);
-		System.out.println(form);
+		Date hireDate = java.sql.Date.valueOf(form.getHireDate());
+		employee.setHireDate(hireDate);
+//		employeeService.insert(employee);
+		System.out.println(employee);
 		return "redirect:/employee/showList";
 	}
 

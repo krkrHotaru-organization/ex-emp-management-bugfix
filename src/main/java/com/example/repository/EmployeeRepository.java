@@ -106,4 +106,22 @@ public class EmployeeRepository {
 		SqlParameterSource param = new MapSqlParameterSource().addValue("searchWord","%" + searchWord + "%");
 		return template.query(sql,param,EMPLOYEE_ROW_MAPPER);
 	}
+
+	/**
+	 * 受け取った従業員情報を挿入する.
+	 *
+	 * @param employee 従業員情報
+	 */
+	public void save(Employee employee){
+		SqlParameterSource param = new BeanPropertySqlParameterSource(employee);
+		String sql = """
+						INSERT INTO employees
+							(id,
+							name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count)
+						VALUES
+							((SELECT (max(id)+1) FROM employees),
+							:name,:image,:gender,:hireDate,:mailAddress,:zipCode,:address,:telephone,:salary,:characteristics,:dependentsCount);
+						""";
+		template.update(sql,param);
+	}
 }

@@ -16,7 +16,7 @@ public class InsertEmployeeForm {
     /** 性別 */
     private String gender;
     /** 入社日 */
-    private LocalDate hireDate;
+    private String hireDate;
     /** メールアドレス */
     private String mailAddress;
     /** 郵便番号 */
@@ -56,11 +56,11 @@ public class InsertEmployeeForm {
         this.gender = gender;
     }
 
-    public LocalDate getHireDate() {
+    public String getHireDate() {
         return hireDate;
     }
 
-    public void setHireDate(LocalDate hireDate) {
+    public void setHireDate(String hireDate) {
         this.hireDate = hireDate;
     }
 
