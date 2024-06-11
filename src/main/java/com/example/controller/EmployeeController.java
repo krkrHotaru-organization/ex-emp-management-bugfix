@@ -90,6 +90,9 @@ public class EmployeeController {
 	@GetMapping("/showDetail")
 	public String showDetail(String id, Model model) {
 		Employee employee = employeeService.showDetail(Integer.parseInt(id));
+		if (employee.getImage().length() >= 100){
+			model.addAttribute("isBase64",true);
+		}
 		model.addAttribute("employee", employee);
 		return "employee/detail";
 	}

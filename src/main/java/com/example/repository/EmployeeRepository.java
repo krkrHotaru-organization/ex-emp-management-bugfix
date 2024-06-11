@@ -112,7 +112,7 @@ public class EmployeeRepository {
 	 *
 	 * @param employee 従業員情報
 	 */
-	public void save(Employee employee){
+	synchronized public void save(Employee employee){
 		SqlParameterSource param = new BeanPropertySqlParameterSource(employee);
 		String sql = """
 						INSERT INTO employees
