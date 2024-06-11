@@ -182,7 +182,7 @@
                               name="zipCode"
                               id="zipCode"
                               class="form-control"
-                              placeholder="000-0000"
+                              placeholder="0000000"
                               th:field="*{zipCode}"
                               th:errorclass="error-input"
                               value=""
@@ -195,6 +195,7 @@
                   <div class="row">
                     <div class="col-sm-12">
                       <label for="address"> 住所: </label>
+                      <button type="button" id="get_address_button">郵便番号から検索</button>
                       <label
                               th:errors="*{address}"
                               class="error-messages"
@@ -330,6 +331,7 @@
     </div>
     <!-- end container -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script th:src="@{/js/emp/insert.js}"></script>
     <script src="../../static/js/bootstrap.min.js"></script>
   </body>
 </html>
