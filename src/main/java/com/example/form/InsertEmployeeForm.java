@@ -1,5 +1,7 @@
 package com.example.form;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import java.time.LocalDate;
 
 /**
@@ -12,7 +14,7 @@ public class InsertEmployeeForm {
     /** 従業員名 */
     private String name;
     /** 写真 */
-    private String image;
+    private MultipartFile image;
     /** 性別 */
     private String gender;
     /** 入社日 */
@@ -40,11 +42,11 @@ public class InsertEmployeeForm {
         this.name = name;
     }
 
-    public String getImage() {
+    public MultipartFile getImage() {
         return image;
     }
 
-    public void setImage(String image) {
+    public void setImage(MultipartFile image) {
         this.image = image;
     }
 

@@ -47,6 +47,7 @@
               action="list.html"
               th:action="@{/employee/insert}"
               th:object="${insertEmployeeForm}"
+              enctype="multipart/form-data"
             >
               <fieldset>
                 <legend>
@@ -87,16 +88,17 @@
                       >
                         氏名を入力してください
                       </label>
-                      <input
-                              type="text"
-                              name="image"
-                              id="image"
-                              class="form-control"
-                              placeholder="画像URL"
-                              th:field="*{image}"
-                              th:errorclass="error-input"
-                              value=""
-                      />
+                        <input type="file" name="image" id="image" th:field="*{image}" th:errorclass="error-input">
+<!--                      <input-->
+<!--                              type="text"-->
+<!--                              name="image"-->
+<!--                              id="image"-->
+<!--                              class="form-control"-->
+<!--                              placeholder="画像URL"-->
+<!--                              th:field="*{image}"-->
+<!--                              th:errorclass="error-input"-->
+<!--                              value=""-->
+<!--                      />-->
                     </div>
                   </div>
                 </div>

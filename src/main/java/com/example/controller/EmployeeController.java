@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import java.io.IOException;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +8,7 @@ import java.util.List;
 import com.example.domain.Administrator;
 import com.example.form.InsertAdministratorForm;
 import com.example.form.InsertEmployeeForm;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.example.domain.Employee;
 import com.example.form.UpdateEmployeeForm;
 import com.example.service.EmployeeService;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 従業員情報を操作するコントローラー.
@@ -121,10 +124,20 @@ public class EmployeeController {
 	public String register(InsertEmployeeForm form){
 		Employee employee = new Employee();
 		BeanUtils.copyProperties(form, employee);
+
 		Date hireDate = java.sql.Date.valueOf(form.getHireDate());
 		employee.setHireDate(hireDate);
+
+		MultipartFile multipartFile = form.getImage();
+		byte[] bytes;
+        try {
+            bytes = multipartFile.getBytes();
+        } catch (IOException e) {
+			e.printStackTrace();
+			return null;
+        }
+        employee.setImage(Base64.encodeBase64String(bytes));
 		employeeService.insert(employee);
-		System.out.println(employee);
 		return "redirect:/employee/showList";
 	}
 
