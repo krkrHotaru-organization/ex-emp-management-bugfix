@@ -66,4 +66,11 @@ public class EmployeeService {
 	public void insert(Employee employee){
 		employeeRepository.save(employee);
 	}
+
+	public boolean isExistMailAddress(String mailAddress){
+		if (employeeRepository.findByMailAddress(mailAddress) == null){
+			return false;
+		}
+		return true;
+	}
 }

@@ -124,7 +124,15 @@ public class EmployeeController {
 	}
 
 	@PostMapping("/insert")
-	public String register(InsertEmployeeForm form){
+	public String register(@Validated InsertEmployeeForm form,
+						   BindingResult result,
+						   Model model){
+		if (employeeService.isExistMailAddress(form.getMailAddress())){
+			result.rejectValue("mailAddress","","このメールアドレスは既に登録されています");
+		}
+		if (result.hasErrors()){
+			return toInsert(form);
+		}
 		Employee employee = new Employee();
 		BeanUtils.copyProperties(form, employee);
 

@@ -107,6 +107,21 @@ public class EmployeeRepository {
 		return template.query(sql,param,EMPLOYEE_ROW_MAPPER);
 	}
 
+	public Employee findByMailAddress(String mailAddress){
+		String sql = """
+						SELECT
+							id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count
+						FROM employees
+						WHERE mail_address=:mailAddress;
+						""";
+		SqlParameterSource param = new MapSqlParameterSource().addValue("mailAddress",mailAddress);
+		List<Employee> employeeList = template.query(sql,param,EMPLOYEE_ROW_MAPPER);
+		if (employeeList.isEmpty()){
+			return null;
+		}
+		return employeeList.get(0);
+	}
+
 	/**
 	 * 受け取った従業員情報を挿入する.
 	 *
@@ -122,6 +137,6 @@ public class EmployeeRepository {
 							((SELECT (max(id)+1) FROM employees),
 							:name,:image,:gender,:hireDate,:mailAddress,:zipCode,:address,:telephone,:salary,:characteristics,:dependentsCount);
 						""";
-		System.out.println(template.update(sql,param));
+		template.update(sql,param);
 	}
 }

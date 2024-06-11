@@ -1,5 +1,9 @@
 package com.example.form;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
@@ -12,14 +16,19 @@ import java.time.LocalDate;
 
 public class InsertEmployeeForm {
     /** 従業員名 */
+    @NotBlank(message = "名前は必須入力です")
     private String name;
     /** 写真 */
     private MultipartFile image;
     /** 性別 */
+    @NotBlank(message = "性別を選択してください")
     private String gender;
     /** 入社日 */
+    @NotBlank(message = "入社日は必須入力です")
     private String hireDate;
     /** メールアドレス */
+    @NotBlank(message = "メールアドレスは必須入力です")
+    @Email(message = "メールアドレスの形式で入力してください")
     private String mailAddress;
     /** 郵便番号 */
     private String zipCode;
@@ -28,10 +37,12 @@ public class InsertEmployeeForm {
     /** 電話番号 */
     private String telephone;
     /** 給与 */
+    @NotNull(message = "給与は必須入力です")
     private Integer salary;
     /** 特徴 */
     private String characteristics;
     /** 扶養人数 */
+    @NotNull(message = "扶養人数を入力してください")
     private Integer dependentsCount;
 
     public String getName() {
