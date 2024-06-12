@@ -81,26 +81,30 @@ public class EmployeeRepository {
     }
 
     /**
-     * 従業員一覧情報を入社日順で取得します.
+     * 従業員情報全件を引き数指定に沿って入社日昇順で取得します.
      *
-     * @param searchWord 引数に入力があった場合は、曖昧検索が行われます。
-     * @param limit      持ってきたい従業員情報の行数
-     * @param offset     最初に持ってきたい従業員情報の開始位置
+     * @param searchWord 文字列が入ると名前カラムであいまい検索、nullが入ると全件検索が行われます
+     * @param limit      数値が入ると行数制限、nullが入ると全行取得します
+     * @param offset     数値が入ると取得開始行指定、nullが入ると最初から取得します
      * @return 引数にあった開始位置・行数の従業員情報のリスト
      */
     public List<Employee> findByNameFuzzy(String searchWord, Integer limit, Integer offset) {
-        searchWord = searchWord == null ? "" : searchWord;
         String sql = """
                 SELECT
                 	id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count
                 FROM employees
                 WHERE name LIKE :searchWord
                 ORDER BY hire_date ASC
+                LIMIT :limit OFFSET :offset;
                 """;
+        if (searchWord == null){
+            searchWord = "";
+        }
         if (limit == null) {
-            sql += "LIMIT ALL OFFSET :offset;";
-        } else {
-            sql += "LIMIT :limit OFFSET :offset;";
+            sql = sql.replace(":limit", "NULL");
+        }
+        if (offset == null){
+            sql = sql.replace(":offset","NULL");
         }
         SqlParameterSource param = new MapSqlParameterSource()
                 .addValue("searchWord", "%" + searchWord + "%")
@@ -119,17 +123,19 @@ public class EmployeeRepository {
     }
 
     /**
-     * 引数と指定した単語で曖昧検索を行った場合の検索結果全行の行数を取得します.
+     * 条件に沿って検索された従業員情報の行数を取得します.
      *
-     * @param searchWord 従業員氏名のカラムであいまい検索を行う単語
-     * @return 検索結果の行数
+     * @param searchWord 文字列が入るとあいまい検索結果数カウント、nullが入ると全件検索の検索結果数カウント
+     * @return 検索結果数
      */
     public Integer countFSRows(String searchWord) {
-        searchWord = searchWord == null ? "" : searchWord;
         String sql = """
                 SELECT count(*) FROM employees
                 WHERE name LIKE :searchWord;
                 """;
+        if (searchWord == null){
+            searchWord = "";
+        }
         SqlParameterSource param = new MapSqlParameterSource()
                 .addValue("searchWord", "%" + searchWord + "%");
         return template.queryForObject(sql, param, Integer.class);

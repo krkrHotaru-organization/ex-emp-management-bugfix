@@ -56,18 +56,23 @@ public class EmployeeController {
 	@GetMapping("/showList")
 	public String showList(String searchWord, Model model, Integer page) {
 
-		List<Employee> employeeList = employeeService.fuzzySearchByName(searchWord, 10,page);
+		List<Employee> employeeList = employeeService.findEmpsAccordingToPage(searchWord, 10,page);
 		int allRowsCount = employeeService.countFSAllRow(searchWord);
 		if (employeeList.isEmpty()){
-			employeeList = employeeService.fuzzySearchByName(null,10,page);
+			employeeList = employeeService.findEmpsAccordingToPage(null,10,page);
 			allRowsCount = employeeService.countAllRow();
 			if (searchWord != null){
 				model.addAttribute("notFound","１件もありませんでした");
 			}
 		}
 
+		int maxPage = (int)(ceil((double)allRowsCount/10));
+		if (page != null && page > maxPage){
+			model.addAttribute("notFound","存在しないページへの遷移が行われたため、初期画面を表示しました");
+			return showList(null,model,null);
+		}
 		List<Integer> pages = new ArrayList<>();
-		for (int i = 0; i <= ceil(allRowsCount/10); i++) {
+		for (int i = 0; i < maxPage; i++) {
 			pages.add(i+1);
 		}
 		model.addAttribute("pages",pages);
