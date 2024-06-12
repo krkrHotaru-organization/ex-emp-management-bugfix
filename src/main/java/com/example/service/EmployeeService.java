@@ -62,7 +62,7 @@ public class EmployeeService {
 	 * @return 検索結果の従業員情報一覧
 	 */
 	public List<Employee> fuzzySearchByName(String searchWord,Integer rowNum,Integer page){
-		Integer offset = page == null ? 0 : (page - 1) * 10;
+		int offset = page == null ? 0 : (page - 1) * 10;
 		return employeeRepository.findByNameFuzzy(searchWord,rowNum,offset);
 	}
 

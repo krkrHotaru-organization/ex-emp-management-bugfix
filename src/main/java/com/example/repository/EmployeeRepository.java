@@ -89,6 +89,7 @@ public class EmployeeRepository {
      * @return 引数にあった開始位置・行数の従業員情報のリスト
      */
     public List<Employee> findByNameFuzzy(String searchWord, Integer limit, Integer offset) {
+        searchWord = searchWord == null ? "" : searchWord;
         String sql = """
                 SELECT
                 	id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count
@@ -96,9 +97,9 @@ public class EmployeeRepository {
                 WHERE name LIKE :searchWord
                 ORDER BY hire_date ASC
                 """;
-        if (limit == null){
+        if (limit == null) {
             sql += "LIMIT ALL OFFSET :offset;";
-        }else{
+        } else {
             sql += "LIMIT :limit OFFSET :offset;";
         }
         SqlParameterSource param = new MapSqlParameterSource()
@@ -124,6 +125,7 @@ public class EmployeeRepository {
      * @return 検索結果の行数
      */
     public Integer countFSRows(String searchWord) {
+        searchWord = searchWord == null ? "" : searchWord;
         String sql = """
                 SELECT count(*) FROM employees
                 WHERE name LIKE :searchWord;

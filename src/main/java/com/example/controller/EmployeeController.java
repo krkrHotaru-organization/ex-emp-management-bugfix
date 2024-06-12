@@ -54,12 +54,12 @@ public class EmployeeController {
 	 * @return 従業員一覧画面
 	 */
 	@GetMapping("/showList")
-	public String showList(String searchWord,Model model,Integer page) {
+	public String showList(String searchWord, Model model, Integer page) {
 
-		List<Employee> employeeList = employeeService.fuzzySearchByName(searchWord,10,page);
+		List<Employee> employeeList = employeeService.fuzzySearchByName(searchWord, 10,page);
 		int allRowsCount = employeeService.countFSAllRow(searchWord);
 		if (employeeList.isEmpty()){
-			employeeList = employeeService.showList();
+			employeeList = employeeService.fuzzySearchByName(null,10,page);
 			allRowsCount = employeeService.countAllRow();
 			if (searchWord != null){
 				model.addAttribute("notFound","１件もありませんでした");
@@ -71,6 +71,7 @@ public class EmployeeController {
 			pages.add(i+1);
 		}
 		model.addAttribute("pages",pages);
+		model.addAttribute("searchWord",searchWord);
 		model.addAttribute("employeeList", employeeList);
 		return "employee/list";
 	}

@@ -86,9 +86,9 @@
       <ol class="breadcrumb">
         <li class="active">
           <a href="list.html" th:href="@{/employee/showList}">従業員リスト</a>
-          <form th:action="@{/employee/showList?searchWord=}" method="get">
-            <label for="fuzzy-search">🔍</label>
-            <input type="text" name="searchWord" id="fuzzy-search">
+          <form th:action="@{/employee/showList}" method="get">
+            <label for="searchWord">🔍</label>
+            <input type="text" name="searchWord" id="searchWord" th:value="${searchWord}">
             <button type="submit">検索</button>
           </form>
         </li>
@@ -135,11 +135,14 @@
           <table>
             <tr>
               <td th:each="page : ${pages}">
-                <a th:href="@{/employee/showList}" th:text="${page}"></a>
+                <form th:action="@{/employee/showList}" method="get">
+                  <input type="hidden" name="searchWord" th:value="${searchWord}">
+                  <input type="hidden" name="page" th:value="${page}">
+                  <button type="submit" th:text="${page}"></button>
+                </form>
               </td>
             </tr>
           </table>
-<!--          <div th:each="${cou}"></div>-->
           <!-- ここから下を編集する必要はありません -->
         </div>
       </div>
