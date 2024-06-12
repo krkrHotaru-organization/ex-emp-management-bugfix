@@ -54,12 +54,44 @@ public class EmployeeService {
 	}
 
 	/**
-	 * 従業員情報の名前であいまい検索を行います.
+	 * 従業員情報の名前であいまい検索を行い、指定行・指定開始位置で情報を取得します.
 	 *
 	 * @param searchWord 入力された名前
+	 * @param rowNum ほしい行数
+	 * @param page 従業員情報取得開始位置
 	 * @return 検索結果の従業員情報一覧
 	 */
-	public List<Employee> fuzzySearchByName(String searchWord){
-		return employeeRepository.findByNameFuzzy(searchWord);
+	public List<Employee> fuzzySearchByName(String searchWord,Integer rowNum,Integer page){
+		Integer offset = page == null ? 0 : (page - 1) * 10;
+		return employeeRepository.findByNameFuzzy(searchWord,rowNum,offset);
+	}
+
+	/**
+	 * 全従業員情報の行数を取得します.
+	 * 検索結果が0件だった場合は int = 0 を返します。
+	 *
+	 * @return 全従業員数
+	 */
+	public int countAllRow(){
+		Integer result = employeeRepository.countAllRow();
+		if (result == null){
+			return 0;
+		}
+		return result;
+	}
+
+	/**
+	 * あいまい検索結果の全行数を取得します.
+	 * 検索結果が0件だった場合は int = 0 を返します。
+	 *
+	 * @param searchWord あいまい検索したい単語
+	 * @return あいまい検索結果の全行数
+	 */
+	public int countFSAllRow(String searchWord){
+		Integer result = employeeRepository.countFSRows(searchWord);
+		if (result == null){
+			return 0;
+		}
+		return result;
 	}
 }

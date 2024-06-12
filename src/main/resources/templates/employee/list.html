@@ -132,6 +132,14 @@
               </tr>
             </tbody>
           </table>
+          <table>
+            <tr>
+              <td th:each="page : ${pages}">
+                <a th:href="@{/employee/showList}" th:text="${page}"></a>
+              </td>
+            </tr>
+          </table>
+<!--          <div th:each="${cou}"></div>-->
           <!-- ここから下を編集する必要はありません -->
         </div>
       </div>

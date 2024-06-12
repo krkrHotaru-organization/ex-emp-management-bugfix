@@ -17,6 +17,8 @@ import com.example.domain.Employee;
 import com.example.form.UpdateEmployeeForm;
 import com.example.service.EmployeeService;
 
+import static java.lang.Math.ceil;
+
 /**
  * 従業員情報を操作するコントローラー.
  * 
@@ -52,19 +54,23 @@ public class EmployeeController {
 	 * @return 従業員一覧画面
 	 */
 	@GetMapping("/showList")
-	public String showList(String searchWord,Model model) {
-		List<Employee> employeeList = new ArrayList<>();
-		if (searchWord != null) {
-			employeeList = employeeService.fuzzySearchByName(searchWord);
-		} else {
+	public String showList(String searchWord,Model model,Integer page) {
+
+		List<Employee> employeeList = employeeService.fuzzySearchByName(searchWord,10,page);
+		int allRowsCount = employeeService.countFSAllRow(searchWord);
+		if (employeeList.isEmpty()){
 			employeeList = employeeService.showList();
+			allRowsCount = employeeService.countAllRow();
+			if (searchWord != null){
+				model.addAttribute("notFound","１件もありませんでした");
+			}
 		}
 
-		if (employeeList.size() == 0) {
-			model.addAttribute("notFound", "１件もありませんでした。");
-			employeeList = employeeService.showList();
-
+		List<Integer> pages = new ArrayList<>();
+		for (int i = 0; i <= ceil(allRowsCount/10); i++) {
+			pages.add(i+1);
 		}
+		model.addAttribute("pages",pages);
 		model.addAttribute("employeeList", employeeList);
 		return "employee/list";
 	}
