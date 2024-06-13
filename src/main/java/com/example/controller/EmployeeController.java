@@ -25,6 +25,8 @@ import com.example.form.UpdateEmployeeForm;
 import com.example.service.EmployeeService;
 import org.springframework.web.multipart.MultipartFile;
 
+import static java.lang.Math.ceil;
+
 /**
  * 従業員情報を操作するコントローラー.
  * 
@@ -60,19 +62,29 @@ public class EmployeeController {
 	 * @return 従業員一覧画面
 	 */
 	@GetMapping("/showList")
-	public String showList(String searchWord,Model model) {
-		List<Employee> employeeList = new ArrayList<>();
-		if (searchWord != null) {
-			employeeList = employeeService.fuzzySearchByName(searchWord);
-		} else {
-			employeeList = employeeService.showList();
+	public String showList(String searchWord, Model model, Integer page) {
+
+		List<Employee> employeeList = employeeService.findEmpsAccordingToPage(searchWord, 10,page);
+		int allRowsCount = employeeService.countFSAllRow(searchWord);
+		if (employeeList.isEmpty()){
+			employeeList = employeeService.findEmpsAccordingToPage(null,10,page);
+			allRowsCount = employeeService.countAllRow();
+			if (searchWord != null){
+				model.addAttribute("notFound","１件もありませんでした");
+			}
 		}
 
-		if (employeeList.size() == 0) {
-			model.addAttribute("notFound", "１件もありませんでした。");
-			employeeList = employeeService.showList();
-
+		int maxPage = (int)(ceil((double)allRowsCount/10));
+		if (page != null && page > maxPage){
+			model.addAttribute("notFound","存在しないページへの遷移が行われたため、初期画面を表示しました");
+			return showList(null,model,null);
 		}
+		List<Integer> pages = new ArrayList<>();
+		for (int i = 0; i < maxPage; i++) {
+			pages.add(i+1);
+		}
+		model.addAttribute("pages",pages);
+		model.addAttribute("searchWord",searchWord);
 		model.addAttribute("employeeList", employeeList);
 		return "employee/list";
 	}
