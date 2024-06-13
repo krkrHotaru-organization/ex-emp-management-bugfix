@@ -62,7 +62,7 @@ public class EmployeeService {
      */
     public List<Employee> findEmpsAccordingToPage(String searchWord, Integer rowNum, Integer page) {
         int offset = page == null ? 0 : (page - 1) * 10;
-        return employeeRepository.findByNameFuzzy(searchWord, rowNum, offset);
+        return employeeRepository.findEmpsSearchByWordClipByLimitAndOffset(searchWord, rowNum, offset);
     }
 
     /**

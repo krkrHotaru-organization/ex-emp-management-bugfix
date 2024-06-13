@@ -1,6 +1,5 @@
 package com.example.repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,7 +76,7 @@ public class EmployeeRepository {
      * @return 全従業員情報
      */
     public List<Employee> findAll() {
-        return findByNameFuzzy(null, null, null);
+        return findEmpsSearchByWordClipByLimitAndOffset(null, null, null);
     }
 
     /**
@@ -88,23 +87,21 @@ public class EmployeeRepository {
      * @param offset     数値が入ると取得開始行指定、nullが入ると最初から取得します
      * @return 引数にあった開始位置・行数の従業員情報のリスト
      */
-    public List<Employee> findByNameFuzzy(String searchWord, Integer limit, Integer offset) {
+    public List<Employee> findEmpsSearchByWordClipByLimitAndOffset(String searchWord, Integer limit, Integer offset) {
         String sql = """
                 SELECT
                 	id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count
                 FROM employees
-                WHERE name LIKE :searchWord
-                ORDER BY hire_date ASC
-                LIMIT :limit OFFSET :offset;
                 """;
-        if (searchWord == null){
-            searchWord = "";
+        if (searchWord != null) {
+            sql += "WHERE name LIKE :searchWord";
         }
-        if (limit == null) {
-            sql = sql.replace(":limit", "NULL");
+        sql += " ORDER BY hire_date ASC ";
+        if (limit != null) {
+            sql = sql + " LIMIT :limit ";
         }
-        if (offset == null){
-            sql = sql.replace(":offset","NULL");
+        if (offset != null) {
+            sql = sql + " OFFSET :offset ";
         }
         SqlParameterSource param = new MapSqlParameterSource()
                 .addValue("searchWord", "%" + searchWord + "%")
@@ -133,7 +130,7 @@ public class EmployeeRepository {
                 SELECT count(*) FROM employees
                 WHERE name LIKE :searchWord;
                 """;
-        if (searchWord == null){
+        if (searchWord == null) {
             searchWord = "";
         }
         SqlParameterSource param = new MapSqlParameterSource()
