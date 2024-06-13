@@ -1,8 +1,15 @@
 package com.example.controller;
 
+import java.io.IOException;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.domain.Administrator;
+import com.example.form.InsertAdministratorForm;
+import com.example.form.InsertEmployeeForm;
+import org.apache.tomcat.util.codec.binary.Base64;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.example.domain.Employee;
 import com.example.form.UpdateEmployeeForm;
 import com.example.service.EmployeeService;
+import org.springframework.web.multipart.MultipartFile;
 
 import static java.lang.Math.ceil;
 
@@ -94,6 +102,9 @@ public class EmployeeController {
 	@GetMapping("/showDetail")
 	public String showDetail(String id, Model model) {
 		Employee employee = employeeService.showDetail(Integer.parseInt(id));
+		if (employee.getImage().length() >= 100){
+			model.addAttribute("isBase64",true);
+		}
 		model.addAttribute("employee", employee);
 		return "employee/detail";
 	}
@@ -116,6 +127,32 @@ public class EmployeeController {
 		employee.setId(form.getIntId());
 		employee.setDependentsCount(form.getIntDependentsCount());
 		employeeService.update(employee);
+		return "redirect:/employee/showList";
+	}
+
+	@GetMapping("/toInsert")
+	public String toInsert(InsertEmployeeForm form){
+		return "employee/insert";
+	}
+
+	@PostMapping("/insert")
+	public String register(InsertEmployeeForm form){
+		Employee employee = new Employee();
+		BeanUtils.copyProperties(form, employee);
+
+		Date hireDate = java.sql.Date.valueOf(form.getHireDate());
+		employee.setHireDate(hireDate);
+
+		MultipartFile multipartFile = form.getImage();
+		byte[] bytes;
+        try {
+            bytes = multipartFile.getBytes();
+        } catch (IOException e) {
+			e.printStackTrace();
+			return null;
+        }
+        employee.setImage(Base64.encodeBase64String(bytes));
+		employeeService.insert(employee);
 		return "redirect:/employee/showList";
 	}
 

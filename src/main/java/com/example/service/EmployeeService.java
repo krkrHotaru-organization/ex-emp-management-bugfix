@@ -93,4 +93,8 @@ public class EmployeeService {
         }
         return result;
     }
+
+	public void insert(Employee employee){
+		employeeRepository.save(employee);
+	}
 }

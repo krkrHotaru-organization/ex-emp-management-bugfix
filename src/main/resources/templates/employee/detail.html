@@ -118,12 +118,12 @@
                   </tr>
                   <tr>
                     <th nowrap>写真</th>
-                    <td>
-                      <img
-                        src="../../static/img/e2.png"
-                        th:src="${'/img/' + employee.image}"
-                      />
-                    </td>
+                        <td th:if="${isBase64 == null}">
+                          <img th:src="${'/img/' + employee.image}" />
+                        </td>
+                        <td th:if="${isBase64}">
+                          <img th:src="${'data:image/jpeg;base64,' + employee.image}" />
+                        </td>
                   </tr>
                   <tr>
                     <th nowrap>性別</th>
