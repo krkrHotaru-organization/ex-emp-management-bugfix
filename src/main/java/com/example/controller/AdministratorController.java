@@ -1,11 +1,16 @@
 package com.example.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.context.annotation.Bean;
-//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-//import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -38,6 +43,12 @@ public class AdministratorController {
 
 	@Autowired
 	private HttpSession session;
+
+	@Autowired
+	private AuthenticationManager manager;
+
+	@Autowired
+	private SecurityContextRepository securityContextRepository;
 
 	/**
 	 * 使用するフォームオブジェクトをリクエストスコープに格納する.
@@ -124,13 +135,21 @@ public class AdministratorController {
 	 * @return ログイン後の従業員一覧画面
 	 */
 	@PostMapping("/login")
-	public String login(LoginForm form, RedirectAttributes redirectAttributes) {
-		Administrator administrator = administratorService.login(form.getMailAddress(), form.getPassword());
-		if (administrator == null) {
+	public String login(LoginForm form, RedirectAttributes redirectAttributes, HttpServletRequest request, HttpServletResponse response) {
+		Authentication adminAuth = null;
+		try {
+			adminAuth = manager.authenticate(new UsernamePasswordAuthenticationToken(form.getMailAddress(),form.getPassword()));
+		} catch (AuthenticationException e) {
+			e.printStackTrace();
 			redirectAttributes.addFlashAttribute("errorMessage", "メールアドレスまたはパスワードが不正です。");
 			return "redirect:/";
 		}
-		session.setAttribute("administratorName",administrator.getName());
+
+		SecurityContext context = SecurityContextHolder.createEmptyContext();
+		context.setAuthentication(adminAuth);
+		SecurityContextHolder.setContext(context);
+
+		securityContextRepository.saveContext(context, request, response);
 		return "redirect:/employee/showList";
 	}
 
